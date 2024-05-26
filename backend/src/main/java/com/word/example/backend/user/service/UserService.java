@@ -1,7 +1,6 @@
 package com.word.example.backend.user.service;
 
 import com.word.example.backend.user.dto.UserDto;
-import com.word.example.backend.user.dto.UserProfileImage;
 import com.word.example.backend.user.model.User;
 import com.word.example.backend.user.repository.UserRepository;
 import com.word.example.backend.user.util.ImageUtils;
@@ -10,8 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.awt.*;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 

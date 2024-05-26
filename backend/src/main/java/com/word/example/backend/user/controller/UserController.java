@@ -2,11 +2,7 @@ package com.word.example.backend.user.controller;
 
 
 import com.word.example.backend.user.dto.UserDto;
-import com.word.example.backend.user.dto.UserProfileImage;
-import com.word.example.backend.user.model.User;
 import com.word.example.backend.user.service.UserService;
-import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
