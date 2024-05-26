@@ -31,10 +31,14 @@ public class User implements UserDetails {
     private String password;
     @Column(unique = true)
     private String username;
+    private String email;
 
     @Lob
     @Column(name = "profile_image", length = 1000)
     private byte[] profileImage;
+
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
 
     private boolean accountNonExpired;
     private boolean isEnabled;
@@ -67,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     public String toString() {

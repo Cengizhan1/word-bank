@@ -22,7 +22,6 @@ public class UserContactInformationService {
         checkUserContactInformation(user);
         UserContactInformation userContactInformation =UserContactInformation.builder()
                 .phone(request.phone())
-                .email(request.email())
                 .phonePermission(request.phonePermission())
                 .emailPermission(request.emailPermission())
                 .user(user)
