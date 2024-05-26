@@ -32,6 +32,10 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
 
+    @Lob
+    @Column(name = "profile_image", length = 1000)
+    private byte[] profileImage;
+
     private boolean accountNonExpired;
     private boolean isEnabled;
     private boolean accountNonLocked;

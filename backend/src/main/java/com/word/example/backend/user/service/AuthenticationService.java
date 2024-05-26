@@ -34,7 +34,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         if (repository.existsByUsername(request.username())) {
-            throw new UsernameAlreadyExistsException("Identity number already exists for this user");
+            throw new UsernameAlreadyExistsException("Username already exists for this user");
         }
         var user = User.builder()
                 .name(request.name())
