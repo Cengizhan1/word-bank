@@ -24,9 +24,6 @@ public class UserService {
     public UserDto show() {
         return UserDto.convert(getAuthenticatedUser());
     }
-    public UserDto getUserById(String id) {
-        return UserDto.convert(findUserById(id));
-    }
 
     public byte[] uploadProfileImage(MultipartFile profile) throws IOException {
         User user = getAuthenticatedUser();

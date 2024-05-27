@@ -29,11 +29,6 @@ public class UserController {
         return ResponseEntity.ok(service.show());
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable String userId) {
-        return ResponseEntity.ok(service.getUserById(userId));
-    }
-
     @PostMapping("/upload-profile-image")
     public ResponseEntity<?> uploadProfileImage(@RequestParam("profileImage") MultipartFile profileImage) throws IOException {
         return ResponseEntity.status(HttpStatus.OK)
