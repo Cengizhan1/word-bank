@@ -1,8 +1,8 @@
 package com.word.example.backend.user.controller;
 
-import com.word.example.backend.user.dto.AuthenticationResponse;
-import com.word.example.backend.user.dto.LoginRequest;
-import com.word.example.backend.user.dto.RegisterRequest;
+import com.word.example.backend.user.dto.auth.AuthenticationResponse;
+import com.word.example.backend.user.dto.auth.LoginRequest;
+import com.word.example.backend.user.dto.auth.RegisterRequest;
 import com.word.example.backend.user.service.AuthenticationService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
