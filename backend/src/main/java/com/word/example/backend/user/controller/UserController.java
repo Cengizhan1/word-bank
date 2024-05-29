@@ -36,6 +36,13 @@ public class UserController {
                 .body(service.uploadProfileImage(profileImage));
     }
 
+    @GetMapping("/get-profile-image")
+    public ResponseEntity<?> getProfileImage() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf(IMAGE_PNG_VALUE))
+                .body(service.getProfileImage());
+    }
+
     @GetMapping("/verify")
     public String verifyUser(@Param("code") String code) {
         if (service.verify(code)) {

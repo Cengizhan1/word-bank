@@ -5,6 +5,7 @@ public record UserUpdateRequest(
         String username,
         String surname,
         String password,
-        Integer age
+        String email,
+        String phone
 ){
 }

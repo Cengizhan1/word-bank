@@ -1,4 +1,4 @@
-package com.word.example.backend.user.dto;
+package com.word.example.backend.user.dto.userInformation;
 
 import com.word.example.backend.user.model.enums.Gender;
 import org.springframework.format.annotation.DateTimeFormat;

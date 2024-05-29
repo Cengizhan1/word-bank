@@ -8,16 +8,15 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "user_contact_informations")
+@Table(name = "user_contact_permissions")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserContactInformation {
+public class UserContactPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String phone;
     private Boolean phonePermission = false;
     private Boolean emailPermission = false;
 

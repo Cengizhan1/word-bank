@@ -32,6 +32,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     private String email;
+    private String phone;
 
     @Lob
     @Column(name = "profile_image", length = 1000)
@@ -71,7 +72,8 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+//        return isEnabled;   TODO
+        return true;
     }
 
     public String toString() {

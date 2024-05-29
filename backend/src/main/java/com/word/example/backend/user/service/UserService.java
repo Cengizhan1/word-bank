@@ -29,11 +29,12 @@ public class UserService {
         User user = getAuthenticatedUser();
         user.setProfileImage(ImageUtils.compressImage(profile.getBytes()));
         userRepository.save(user);
-        try {
-            return ImageUtils.decompressImage(user.getProfileImage());
-        } catch (DataFormatException | IOException exception) {
-            throw new RuntimeException("Failed to decompress image", exception);
-        }
+        return decompressImage(user.getProfileImage());
+    }
+
+    public byte[] getProfileImage(){
+        User user = getAuthenticatedUser();
+        return decompressImage(user.getProfileImage());
     }
 
     public boolean verify(String verificationCode) {
@@ -50,6 +51,14 @@ public class UserService {
         }
 
     }
+
+    private byte[] decompressImage(byte[] image){
+        try {
+            return ImageUtils.decompressImage(image);
+        } catch (DataFormatException | IOException exception) {
+            throw new RuntimeException("Failed to decompress image", exception);
+        }
+    }
     protected User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByUsername(authentication.getName()).orElseThrow((
@@ -64,4 +73,6 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+
 }

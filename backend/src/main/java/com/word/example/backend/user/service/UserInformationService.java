@@ -1,9 +1,11 @@
 package com.word.example.backend.user.service;
 
-import com.word.example.backend.user.dto.UserInformationRequest;
+import com.word.example.backend.user.dto.userInformation.UserInformationDto;
+import com.word.example.backend.user.dto.userInformation.UserInformationRequest;
 import com.word.example.backend.user.model.User;
 import com.word.example.backend.user.model.UserInformation;
 import com.word.example.backend.user.repository.UserInformationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,24 +19,23 @@ public class UserInformationService {
         this.userService = userService;
     }
 
-    public void create(UserInformationRequest request) {
+    public UserInformationDto save(UserInformationRequest request) {
         User user = userService.getAuthenticatedUser();
-        checkUserInformation(user);
-        UserInformation userInformation = UserInformation.builder()
-                .gender(request.gender())
-                .age(request.age())
-                .job(request.job())
-                .salary(request.salary())
-                .birthDate(request.birthDate())
-                .user(user)
-                .build();
-
+        UserInformation userInformation= repository.findByUser(user).orElseGet(UserInformation::new);
+        userInformation.setGender(request.gender());
+        userInformation.setAge(request.age());
+        userInformation.setJob(request.job());
+        userInformation.setSalary(request.salary());
+        userInformation.setBirthDate(request.birthDate());
+        userInformation.setUser(user);
         repository.save(userInformation);
+        return UserInformationDto.convert(userInformation);
     }
 
-    private void checkUserInformation(User user) {
-        if (repository.existsByUser(user)) {
-            throw new IllegalStateException("User information already exists");
-        }
+    public UserInformationDto show() {
+        User user = userService.getAuthenticatedUser();
+        return repository.findByUser(user).map(UserInformationDto::convert).orElseThrow(
+                () -> new EntityNotFoundException("User information not found")
+        );
     }
 }

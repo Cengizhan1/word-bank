@@ -1,13 +1,11 @@
 package com.word.example.backend.user.controller;
 
-import com.word.example.backend.user.dto.UserInformationRequest;
+import com.word.example.backend.user.dto.userInformation.UserInformationDto;
+import com.word.example.backend.user.dto.userInformation.UserInformationRequest;
 import com.word.example.backend.user.service.UserInformationService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/api/user-information")
@@ -20,8 +18,12 @@ public class UserInformationController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveUserContactInformation(@Valid @RequestBody UserInformationRequest request) {
-        service.create(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserInformationDto> save(@Valid @RequestBody UserInformationRequest request) {
+        return  ResponseEntity.ok(service.save(request));
+    }
+
+    @GetMapping
+    public ResponseEntity<UserInformationDto> show() {
+        return  ResponseEntity.ok(service.show());
     }
 }
