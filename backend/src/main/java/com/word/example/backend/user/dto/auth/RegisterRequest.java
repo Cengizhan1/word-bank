@@ -1,4 +1,4 @@
-package com.word.example.backend.user.dto;
+package com.word.example.backend.user.dto.auth;
 
 
 public record RegisterRequest(
@@ -6,5 +6,6 @@ public record RegisterRequest(
         String surname,
         String username,
         String password,
-        String email
+        String email,
+        String phone
 ){}

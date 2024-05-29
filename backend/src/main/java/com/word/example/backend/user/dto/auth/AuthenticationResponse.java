@@ -1,4 +1,4 @@
-package com.word.example.backend.user.dto;
+package com.word.example.backend.user.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
