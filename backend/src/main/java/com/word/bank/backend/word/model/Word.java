@@ -17,10 +17,11 @@ public class Word {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long userId;
     private String pronunciation;
     private String name;
-    private String desc;
+    private String description;
     private String shortDesc;
     private String synonyms;
     private String antonyms;

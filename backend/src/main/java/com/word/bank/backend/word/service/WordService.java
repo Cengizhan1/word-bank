@@ -24,7 +24,7 @@ public class WordService {
         Word word = Word.builder().userId(1L)
                 .pronunciation(request.pronunciation())
                 .name(request.name())
-                .desc(request.desc())
+                .description(request.desc())
                 .shortDesc(request.shortDesc())
                 .synonyms(request.synonyms())
                 .antonyms(request.antonyms())

@@ -14,7 +14,7 @@ public record WordDto(
         return new WordDto(
                 word.getPronunciation(),
                 word.getName(),
-                word.getDesc(),
+                word.getDescription(),
                 word.getShortDesc(),
                 word.getSynonyms(),
                 word.getAntonyms()
