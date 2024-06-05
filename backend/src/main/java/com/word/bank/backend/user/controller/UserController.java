@@ -44,12 +44,9 @@ public class UserController {
     }
 
     @GetMapping("/verify")
-    public String verifyUser(@Param("code") String code) {
-        if (service.verify(code)) {
-            return "verify_success";
-        } else {
-            return "verify_fail";
-        }
+    public ResponseEntity<Void> verifyEmail(@Param("code") String code) {
+        service.verify(code);
+        return ResponseEntity.ok().build();
     }
 
 }
