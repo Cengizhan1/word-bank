@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import java.time.LocalDateTime;
 import java.util.Collection;
-
 
 
 @Data
@@ -31,15 +30,18 @@ public class User implements UserDetails {
     private String password;
     @Column(unique = true)
     private String username;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String phone;
 
     @Lob
     @Column(name = "profile_image", length = 1000)
     private byte[] profileImage;
 
-    @Column(name = "verification_code", length = 64)
+    @Column(name = "verification_code", length = 10)
     private String verificationCode;
+    private LocalDateTime verificationCodeSentAt;
 
     private boolean accountNonExpired;
     private boolean isEnabled;
@@ -72,8 +74,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-//        return isEnabled;   TODO
-        return true;
+        return isEnabled;
     }
 
     public String toString() {
