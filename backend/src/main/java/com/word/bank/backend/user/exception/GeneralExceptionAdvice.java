@@ -69,4 +69,9 @@ public class GeneralExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handle(EntityNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(EmailVerificationException.class)
+    public ResponseEntity<?> handle(EmailVerificationException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
 }
