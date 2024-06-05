@@ -26,11 +26,6 @@ public class AuthController {
         this.service = service;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("test");
-    }
-
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request, HttpServletRequest httpServletRequest
