@@ -4,6 +4,10 @@ import com.word.bank.backend.user.dto.auth.AuthenticationResponse;
 import com.word.bank.backend.user.dto.auth.LoginRequest;
 import com.word.bank.backend.user.dto.auth.RegisterRequest;
 import com.word.bank.backend.user.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +31,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Users'ı döndürür",
+            description = "Users'ı döndürür açıklaması. Burada detaylı açıklama yapılabilir. Ayrıca parametreler ve response'lar için de açıklama yapılabilir."
+    )
+  @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product'ı döndürür"),
+            @ApiResponse(responseCode = "404", description = "Product bulunamadı", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server hatası", content = @Content)
+    })
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request, HttpServletRequest httpServletRequest
     ) throws MessagingException, UnsupportedEncodingException {

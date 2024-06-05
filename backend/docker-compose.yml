@@ -1,18 +1,42 @@
 version: '3.8'
+
 services:
+  app:
+    build: .
+    restart: always
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - word-bank-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://word-bank-mysql:3306/word-bank-db?createDatabaseIfNotExist=true&autoReconnect=true
+
+    depends_on:
+      - word-bank-mysql
+    volumes:
+      - .m2:/root/.m2
 
   word-bank-mysql:
     image: mysql:latest
     container_name: word-bank-mysql
+    expose:
+      - "3306"
     ports:
       - "3306:3306"
     restart: always
+    networks:
+      - word-bank-network
     environment:
       MYSQL_DATABASE: word-bank-db
       MYSQL_USER: word-bank-user1
       MYSQL_PASSWORD: 123456
       MYSQL_ROOT_PASSWORD: 123456
     command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
 volumes:
   mysql:
@@ -20,4 +44,3 @@ volumes:
 
 networks:
   word-bank-network:
-    driver: bridge
