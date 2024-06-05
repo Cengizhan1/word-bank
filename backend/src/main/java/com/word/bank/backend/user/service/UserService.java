@@ -1,6 +1,7 @@
 package com.word.bank.backend.user.service;
 
 import com.word.bank.backend.user.dto.UserDto;
+import com.word.bank.backend.user.exception.EmailVerificationException;
 import com.word.bank.backend.user.model.User;
 import com.word.bank.backend.user.repository.UserRepository;
 import com.word.bank.backend.user.util.ImageUtils;
@@ -9,7 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.zip.DataFormatException;
 
 @Service
@@ -32,33 +35,36 @@ public class UserService {
         return decompressImage(user.getProfileImage());
     }
 
-    public byte[] getProfileImage(){
+    public byte[] getProfileImage() {
         User user = getAuthenticatedUser();
         return decompressImage(user.getProfileImage());
     }
 
-    public boolean verify(String verificationCode) {
-        User user = userRepository.findByVerificationCode(verificationCode);
-
-        if (user == null || user.isEnabled()) {
-            return false;
-        } else {
+    public void verify(String verificationCode) {
+        User user = userRepository.findByVerificationCode(verificationCode).orElseThrow(
+                () -> new EmailVerificationException("Verification code is wrong")
+        );
+        if (user.isEnabled()) {
+            throw new EmailVerificationException("User is already verified");
+        }
+        if (user.getVerificationCode().equals(verificationCode) && user.getVerificationCodeSentAt()
+                .plusMinutes(10).isAfter(LocalDateTime.now())) {
             user.setVerificationCode(null);
             user.setEnabled(true);
             userRepository.save(user);
-
-            return true;
+        }else {
+            throw new EmailVerificationException("Verification code is wrong or expired");
         }
-
     }
 
-    private byte[] decompressImage(byte[] image){
+    private byte[] decompressImage(byte[] image) {
         try {
             return ImageUtils.decompressImage(image);
         } catch (DataFormatException | IOException exception) {
             throw new RuntimeException("Failed to decompress image", exception);
         }
     }
+
     protected User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByUsername(authentication.getName()).orElseThrow((

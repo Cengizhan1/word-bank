@@ -22,11 +22,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.SecureRandom;
-import java.util.Base64;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 
 @Service
@@ -38,18 +37,23 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final JavaMailSender mailSender;
-    private final SecureRandom random = new SecureRandom();
 
-    private String generateRandomString() {
-        byte[] bytes = new byte[48];
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    private String generateEmailVerificationCode() {
+        Random random = new Random();
+        int verificationCode = 10000 + random.nextInt(90000);
+        return Integer.toString(verificationCode);
     }
 
     public AuthenticationResponse register(RegisterRequest request,String siteURL) throws MessagingException, UnsupportedEncodingException {
 
         if (repository.existsByUsername(request.username())) {
             throw new UsernameAlreadyExistsException("Username already exists for this user");
+        }
+        if (repository.existsByEmail(request.email())) {
+            throw new UsernameAlreadyExistsException("Email already exists for this user");
+        }
+        if (repository.existsByPhone(request.phone())) {
+            throw new UsernameAlreadyExistsException("Phone already exists for this user");
         }
         var user = User.builder()
                 .name(request.name())
@@ -61,11 +65,12 @@ public class AuthenticationService {
                 .role(Role.ROLE_USER)
                 .build();
 
-//        String randomCode = generateRandomString();
-//        user.setVerificationCode(randomCode);
-//        user.setEnabled(false);
+        String emailCode = generateEmailVerificationCode();
+        user.setVerificationCode(emailCode);
+        user.setVerificationCodeSentAt(LocalDateTime.now());
+        user.setEnabled(false);
 
-//        sendVerificationEmail(user, siteURL);
+        sendVerificationEmail(user,emailCode);
 
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -101,15 +106,14 @@ public class AuthenticationService {
                 .build();
     }
 
-    private void sendVerificationEmail(User user, String siteURL)
+    private void sendVerificationEmail(User user, String code)
             throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
-        String fromAddress = "Your email address";
-        String senderName = "Your company name";
+        String fromAddress = "cengizhany.cy@gmail.com";
+        String senderName = "Word Bank";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
-                + "Please click the link below to verify your registration:<br>"
-                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "You have successfully registered. Your verification code is <b>"+code+"</b><br>"
                 + "Thank you,<br>"
                 + "Your company name.";
 
@@ -121,9 +125,6 @@ public class AuthenticationService {
         helper.setSubject(subject);
 
         content = content.replace("[[name]]", user.getName() + " " + user.getSurname());
-        String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
-
-        content = content.replace("[[URL]]", verifyURL);
 
         helper.setText(content, true);
 
