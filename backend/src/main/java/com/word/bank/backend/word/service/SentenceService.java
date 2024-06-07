@@ -20,20 +20,20 @@ public class SentenceService {
         this.wordService = wordService;
     }
 
-    public List<SentenceDto> create(SentenceCreateRequest request) {
+    public SentenceDto create(SentenceCreateRequest request) {
         Word word = findWordById(request.wordId());
         List<Sentence> sentences = request.sentences().stream()
                 .map(sentence -> Sentence.builder()
                         .sentence(sentence)
                         .word(word)
                         .build()).toList();
-        return repository.saveAll(sentences).stream().map(SentenceDto::convert).toList();
+        List<Sentence> sentenceEntities = repository.saveAll(sentences);
+        return SentenceDto.convert(sentenceEntities);
     }
 
-    public List<SentenceDto> getSentencesByWordId(Long wordId) {
-        return repository.findAllByWordId(wordId).stream()
-                .map(SentenceDto::convert)
-                .toList();
+    public SentenceDto getSentencesByWordId(Long wordId) {
+        List<Sentence> sentences = repository.findAllByWordId(wordId);
+        return SentenceDto.convert(sentences);
     }
 
     private Word findWordById(Long wordId) {
