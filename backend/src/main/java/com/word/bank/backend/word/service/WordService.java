@@ -42,7 +42,7 @@ public class WordService {
         return WordDto.convert(findWordById(id));
     }
 
-    private Word findWordById(Long id) {
+    protected Word findWordById(Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Word not found with id: " + id)
         );
