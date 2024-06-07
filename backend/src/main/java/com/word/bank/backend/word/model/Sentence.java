@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Entity
-@Table(name = "words")
+@Table(name = "sentences")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class Sentence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "word_id")
     private Word word;
     private String sentence;
