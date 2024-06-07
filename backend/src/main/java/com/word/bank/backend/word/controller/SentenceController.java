@@ -22,12 +22,12 @@ public class SentenceController {
     }
 
     @PostMapping
-    public ResponseEntity<List<SentenceDto>> create(@RequestBody @Valid SentenceCreateRequest request) {
+    public ResponseEntity<SentenceDto> create(@RequestBody @Valid SentenceCreateRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<SentenceDto>> getSentencesByWordId(@RequestParam Long wordId) {
+    public ResponseEntity<SentenceDto> getSentencesByWordId(@RequestParam Long wordId) {
         return ResponseEntity.ok(service.getSentencesByWordId(wordId));
     }
 }
