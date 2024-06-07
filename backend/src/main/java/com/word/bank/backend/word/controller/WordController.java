@@ -4,6 +4,7 @@ import com.word.bank.backend.word.dto.word.WordCreateRequest;
 import com.word.bank.backend.word.dto.word.WordDto;
 import com.word.bank.backend.word.service.WordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class WordController {
     }
 
     @PostMapping
-    public ResponseEntity<WordDto> create(WordCreateRequest request) {
+    public ResponseEntity<WordDto> create(@RequestBody @Valid WordCreateRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
 
