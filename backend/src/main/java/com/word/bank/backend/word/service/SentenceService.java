@@ -18,14 +18,15 @@ public class SentenceService {
         this.repository = repository;
     }
 
-    public SentenceDto create(SentenceCreateRequest request) {
-        Sentence sentence = Sentence.builder().sentence(request.sentence().toString()).build();
-        return SentenceDto.convert(repository.save(sentence));
+    public List<SentenceDto> create(SentenceCreateRequest request) {
+        List<Sentence> sentences = request.sentences().stream()
+                .map(sentence -> Sentence.builder().sentence(sentence).build()).toList();
+        return repository.saveAll(sentences).stream().map(SentenceDto::convert).toList();
     }
 
-    public SentenceDto getSentencesByWordId(Long wordId) {
-        return SentenceDto.convert(repository.findByWordId(wordId).orElseThrow(
-                () -> new EntityNotFoundException("There is no sentence with word id: " + wordId)
-        ));
+    public List<SentenceDto> getSentencesByWordId(Long wordId) {
+        return repository.findAllByWordId(wordId).stream()
+                .map(SentenceDto::convert)
+                .toList();
     }
 }

@@ -26,6 +26,5 @@ public class Sentence {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "word_id")
     private Word word;
-    @Column(columnDefinition = "TEXT")
     private String sentence;
 }
