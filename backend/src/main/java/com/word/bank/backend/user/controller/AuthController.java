@@ -31,14 +31,6 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @Operation(summary = "Users'ı döndürür",
-            description = "Users'ı döndürür açıklaması. Burada detaylı açıklama yapılabilir. Ayrıca parametreler ve response'lar için de açıklama yapılabilir."
-    )
-  @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product'ı döndürür"),
-            @ApiResponse(responseCode = "404", description = "Product bulunamadı", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Server hatası", content = @Content)
-    })
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request, HttpServletRequest httpServletRequest
     ) throws MessagingException, UnsupportedEncodingException {
